@@ -79,14 +79,14 @@ public class QuizGameGUI {
         submitButton.addActionListener(e -> {
             String answer = answerField.getText().trim();
             if (!answer.isEmpty()) {
-                client.sendAnswer("ANSWER:" + answer);
+                client.sendAnswer(answer);
             }
         });
 
         answerField.addActionListener(e -> {
             String answer = answerField.getText().trim();
             if (!answer.isEmpty()) {
-                client.sendAnswer("ANSWER:" + answer);
+                client.sendAnswer(answer);
             }
         });
 
@@ -143,13 +143,16 @@ public class QuizGameGUI {
         answerField.setEnabled(false);
         submitButton.setEnabled(false);
         
-        // 정답 여부를 잠시 보여준 후 다음 문제로 넘어감
-        Timer timer = new Timer(1000, e -> {
-            if (correct) {
-                questionLabel.setText("정답입니다! 👍");
-            } else {
-                questionLabel.setText("틀렸습니다! 😢");
-            }
+        if (correct) {
+            questionLabel.setText("정답입니다! 👍");
+        } else {
+            questionLabel.setText("틀렸습니다! 😢");
+        }
+        
+        // 정답 여부를 2초간 보여준 후 다음 문제로 넘어가도록 수정
+        Timer timer = new Timer(2000, e -> {
+            answerField.setEnabled(true);
+            submitButton.setEnabled(true);
         });
         timer.setRepeats(false);
         timer.start();
