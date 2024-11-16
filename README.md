@@ -46,7 +46,7 @@ src/
 
 ### 컴파일
 ```bash
-javac src/*.java
+javac -d bin src/*.java
 ```
 
 ### 서버 실행
