@@ -1,0 +1,27 @@
+{
+    "java.project.sourcePaths": [
+      "src"
+    ],
+    "java.project.outputPath": "bin",
+    "java.home": "/Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home",
+    "java.configuration.runtimes": [
+      {
+        "name": "JavaSE-21",
+        "path": "/Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home",
+        "default": true
+      }
+    ],
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "files.autoSave": "afterDelay",
+    "java.semanticHighlighting.enabled": true,
+    "java.jdt.ls.vmargs": "",
+    "java.import.gradle.jvmArguments": "",
+    "java.project.referencedLibraries": [
+      "lib/**/*.jar",
+      "lib/jackson-annotations-2.17.1.jar",
+      "lib/jackson-core-2.17.1.jar",
+      "lib/jackson-databind-2.17.1.jar",
+    ]
+}
+  
