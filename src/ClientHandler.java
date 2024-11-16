@@ -22,43 +22,41 @@ class ClientHandler implements Runnable {
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
+            String command;
+            int currentQuestion = 0;
             int score = 0;
-            for (Question question : questions) {
-                out.println("QUESTION:" + question.getQuestion());
-                String response = in.readLine();
-                
-                System.out.println("받은 응답: " + response);
-                
-                String answer = "";
-                if (response != null && response.startsWith("ANSWER:")) {
-                    answer = response.substring(7).trim();
-                    System.out.println("사용자 답변: " + answer);
-                    System.out.println("정답: " + question.getAnswer());
+
+            while ((command = in.readLine()) != null) {
+                if (command.equals("START")) {
+                    currentQuestion = 0;
+                    score = 0;
+                    // 첫 문제 전송
+                    out.println("QUESTION:" + questions.get(currentQuestion).getQuestion());
+                } else if (command.startsWith("ANSWER:")) {
+                    String answer = command.substring(7).trim();
+                    Question question = questions.get(currentQuestion);
                     
                     if (answer.equalsIgnoreCase(question.getAnswer())) {
                         score++;
-                        System.out.println("정답 처리됨!");
-                        out.println("CORRECT:정답입니다!");
+                        out.println("CORRECT:" + question.getAnswer());
                     } else {
-                        System.out.println("오답 처리됨!");
-                        out.println("INCORRECT:틀렸습니다. 정답은 " + question.getAnswer() + "입니다.");
+                        out.println("INCORRECT:" + question.getAnswer());
                     }
-                } else {
-                    System.out.println("잘못된 응답 형식: " + response);
-                    out.println("INCORRECT:잘못된 응답 형식입니다.");
+                    
+                    currentQuestion++;
+                    
+                    // 모든 문제를 다 풀었는지 확인
+                    if (currentQuestion >= questions.size()) {
+                        out.println("FINAL_SCORE:" + score + "/" + questions.size());
+                    } else {
+                        // 잠시 대기 후 다음 문제 전송
+                        Thread.sleep(2000);
+                        out.println("QUESTION:" + questions.get(currentQuestion).getQuestion());
+                    }
                 }
             }
-
-            out.println("FINAL_SCORE:" + score + "/" + questions.size());
-            
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             System.err.println("클라이언트 처리 중 에러: " + e.getMessage());
-        } finally {
-            try {
-                clientSocket.close();
-            } catch (IOException e) {
-                System.err.println("소켓 닫기 실패: " + e.getMessage());
-            }
         }
     }
 } 

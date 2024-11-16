@@ -139,23 +139,15 @@ public class QuizGameGUI {
         answerField.requestFocus();
     }
 
-    public void showAnswer(boolean correct) {
+    public void showAnswer(boolean isCorrect, String correctAnswer) {
         answerField.setEnabled(false);
         submitButton.setEnabled(false);
         
-        if (correct) {
-            questionLabel.setText("정답입니다! 👍");
+        if (isCorrect) {
+            questionLabel.setText("정답입니다! 👍\n정답: " + correctAnswer);
         } else {
-            questionLabel.setText("틀렸습니다! 😢");
+            questionLabel.setText("틀렸습니다! 😢\n정답: " + correctAnswer);
         }
-        
-        // 정답 여부를 2초간 보여준 후 다음 문제로 넘어가도록 수정
-        Timer timer = new Timer(2000, e -> {
-            answerField.setEnabled(true);
-            submitButton.setEnabled(true);
-        });
-        timer.setRepeats(false);
-        timer.start();
     }
 
     public JTextField getAnswerField() {
